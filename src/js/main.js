@@ -155,8 +155,7 @@ function throttle(fn, limit) {
   const el = document.getElementById('typed-text');
   if (!el) return;
 
-  /* TODO: Customise these words to match your specialties */
-  const words = ['web', 'cloud', 'the future'];
+  const words = ['cloud solutions', 'business value', 'scalable systems'];
   let wordIdx  = 0;
   let charIdx  = 0;
   let deleting = false;
