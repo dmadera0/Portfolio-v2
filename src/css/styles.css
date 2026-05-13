@@ -595,22 +595,12 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
-.about__photo-placeholder {
+.about__photo-img {
   width: 100%;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--clr-surface-2), var(--clr-bg));
-  border: 1.5px solid var(--clr-border-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: var(--clr-text-faint);
-}
-
-.about__photo-placeholder svg {
-  width: 60%;
-  height: 60%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Corner accent */
