@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Portfolio Editor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+
+  <body>
+
+    <!-- ─── LOGIN ───────────────────────────────────────────────────────── -->
+    <div id="admin-login" class="admin-login">
+      <div class="admin-login__card">
+        <div class="admin-login__logo">DM</div>
+        <h1 class="admin-login__title">Portfolio Admin</h1>
+        <p id="login-subtitle" class="admin-login__subtitle">Enter your admin password</p>
+
+        <form id="login-form" class="admin-login__form" novalidate>
+          <div class="admin-field">
+            <label for="password-input">Password</label>
+            <input
+              type="password"
+              id="password-input"
+              autocomplete="current-password"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+          <p class="admin-login__error" id="login-error" hidden></p>
+        </form>
+
+        <a href="index.html" class="admin-login__back">← Back to portfolio</a>
+      </div>
+    </div>
+
+    <!-- ─── APP ─────────────────────────────────────────────────────────── -->
+    <div id="admin-app" hidden>
+
+      <header class="admin-header">
+        <div class="admin-header__inner">
+          <a href="index.html" class="admin-header__back">← Portfolio</a>
+          <span class="admin-header__title">Content Editor</span>
+          <button id="logout-btn" class="admin-btn admin-btn--sm">Logout</button>
+        </div>
+      </header>
+
+      <div class="admin-layout">
+
+        <!-- Sidebar tabs -->
+        <nav class="admin-sidebar" aria-label="Section navigation">
+          <button class="admin-tab active" data-tab="hero">Hero</button>
+          <button class="admin-tab" data-tab="about">About</button>
+          <button class="admin-tab" data-tab="projects">Projects</button>
+          <button class="admin-tab" data-tab="experience">Experience</button>
+          <button class="admin-tab" data-tab="contact">Contact</button>
+          <hr class="admin-sidebar__divider" />
+          <p class="admin-sidebar__note">Skills are edited directly in index.html (they use icon class names).</p>
+        </nav>
+
+        <!-- Editor -->
+        <main class="admin-content">
+          <form id="editor-form" novalidate>
+            <div id="panel-hero"       class="admin-panel"></div>
+            <div id="panel-about"      class="admin-panel" hidden></div>
+            <div id="panel-projects"   class="admin-panel" hidden></div>
+            <div id="panel-experience" class="admin-panel" hidden></div>
+            <div id="panel-contact"    class="admin-panel" hidden></div>
+          </form>
+        </main>
+
+      </div>
+
+      <!-- Sticky action bar -->
+      <footer class="admin-actions">
+        <div class="admin-actions__inner">
+          <div class="admin-actions__left">
+            <button id="reset-btn" class="admin-btn admin-btn--danger">Reset to defaults</button>
+          </div>
+          <div class="admin-actions__right">
+            <button id="save-btn" class="admin-btn">Save draft</button>
+            <button id="download-btn" class="btn btn--primary">
+              Download index.html
+            </button>
+          </div>
+        </div>
+        <p class="admin-actions__note">
+          After downloading: replace <code>src/index.html</code> with the file, then run <code>./scripts/deploy.sh</code>
+        </p>
+      </footer>
+
+    </div>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>

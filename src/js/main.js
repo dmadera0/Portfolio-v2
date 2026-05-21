@@ -155,7 +155,7 @@ function throttle(fn, limit) {
   const el = document.getElementById('typed-text');
   if (!el) return;
 
-  const words = ['cloud solutions', 'business value', 'scalable systems'];
+  const words = window.TYPED_WORDS || ['cloud solutions', 'business value', 'scalable systems'];
   let wordIdx  = 0;
   let charIdx  = 0;
   let deleting = false;
