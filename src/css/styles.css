@@ -1,36 +1,36 @@
 /* ============================================================
    PORTFOLIO — styles.css
    Dark-theme personal portfolio stylesheet
-   Fonts: Syne (headings) + Space Grotesk (body) via Google Fonts
+   Fonts: Outfit (headings) + Space Grotesk (body) via Google Fonts
    ============================================================ */
 
 /* ─── 1. DESIGN TOKENS ────────────────────────────────────────────────────── */
 :root {
   /* Color palette */
-  --clr-bg:          #080811;      /* Near-black page background            */
-  --clr-surface:     #0f0f1a;      /* Slightly lighter surfaces / cards     */
-  --clr-surface-2:   #16162a;      /* Hover/elevated surfaces               */
-  --clr-border:      #1e1e35;      /* Subtle dividers                       */
-  --clr-border-2:    #2a2a4a;      /* More visible borders                  */
+  --clr-bg:          #09090B;      /* OLED near-black page background       */
+  --clr-surface:     #111113;      /* Card / panel backgrounds              */
+  --clr-surface-2:   #1C1C1F;      /* Hover / elevated surfaces             */
+  --clr-border:      rgba(255,255,255,0.07); /* Subtle dividers             */
+  --clr-border-2:    rgba(255,255,255,0.13); /* More visible borders        */
 
   /* Accent colors */
-  --clr-accent:      #7c6dfa;      /* Primary indigo-violet                 */
-  --clr-accent-dim:  #4f46c8;      /* Darker variant                        */
-  --clr-accent-glow: rgba(124, 109, 250, 0.20);
-  --clr-cyan:        #22d3ee;      /* Secondary cyan highlight              */
-  --clr-cyan-dim:    #0e9fba;
+  --clr-accent:      #F59E0B;      /* Primary amber                         */
+  --clr-accent-dim:  #D97706;      /* Darker amber variant                  */
+  --clr-accent-glow: rgba(245, 158, 11, 0.18);
+  --clr-cyan:        #14B8A6;      /* Secondary teal highlight              */
+  --clr-cyan-dim:    #0D9488;
 
   /* Text */
-  --clr-text:        #e8e8f2;      /* Primary text                          */
-  --clr-text-muted:  #8888aa;      /* Secondary / label text                */
-  --clr-text-faint:  #44445a;      /* Very dim text                         */
+  --clr-text:        #FAFAFA;      /* Primary text                          */
+  --clr-text-muted:  #A1A1AA;      /* Secondary / label text                */
+  --clr-text-faint:  #52525B;      /* Very dim text                         */
 
   /* Semantic */
   --clr-success:     #4ade80;
   --clr-error:       #f87171;
 
   /* Typography */
-  --font-heading:    'Syne', sans-serif;
+  --font-heading:    'Outfit', sans-serif;
   --font-body:       'Space Grotesk', sans-serif;
 
   /* Font sizes — fluid scale using clamp() */
@@ -74,7 +74,7 @@
   --shadow-sm:   0 2px 8px rgba(0,0,0,.35);
   --shadow-md:   0 8px 24px rgba(0,0,0,.45);
   --shadow-lg:   0 16px 48px rgba(0,0,0,.55);
-  --shadow-glow: 0 0 40px rgba(124,109,250,.18);
+  --shadow-glow: 0 0 40px rgba(245,158,11,.15);
 
   /* Transitions */
   --ease:      cubic-bezier(0.22, 1, 0.36, 1);
