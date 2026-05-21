@@ -946,7 +946,7 @@ ${expHtml}
     title: 'Ask about Daniel',
     subtitle: 'AI Assistant — powered by Claude',
     placeholder: 'Ask about my experience, skills, or projects...',
-    accentColor: '#7c6dfa'
+    accentColor: '#4ADE80'
   };
 </script>
 <script>window.TYPED_WORDS = ${JSON.stringify(h.typedWords)};</script>

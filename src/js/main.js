@@ -40,8 +40,8 @@ function throttle(fn, limit) {
   let width, height, particles, animId;
 
   /* Color values matching CSS --clr-accent and --clr-cyan */
-  const ACCENT   = { r: 124, g: 109, b: 250 };
-  const CYAN     = { r:  34, g: 211, b: 238 };
+  const ACCENT   = { r:  74, g: 222, b: 128 };
+  const CYAN     = { r: 251, g: 191, b:  36 };
   const PARTICLE_COUNT = Math.min(70, Math.floor(window.innerWidth / 16));
   const CONNECT_DIST   = 160;  /* px — max distance to draw a line between particles */
 
@@ -313,57 +313,69 @@ function throttle(fn, limit) {
 })();
 
 
-/* ─── 7. Contact Form ────────────────────────────────────────────────────── */
+/* ─── 7. Contact Form ─────────────────────────────────────────────────────── */
 (function initContactForm() {
-  const form = document.getElementById('contact-form');
+  const form    = document.getElementById('contact-form');
+  const btn     = document.getElementById('contact-submit');
+  const success = document.getElementById('form-success');
   if (!form) return;
 
-  /*
-   * This is a static mailto form.
-   * For a real backend, swap the action URL to a Formspree/Netlify/SES endpoint
-   * and send a JSON POST via fetch() instead.
-   */
-  form.addEventListener('submit', e => {
-    const name    = form.querySelector('#contact-name')?.value.trim();
-    const email   = form.querySelector('#contact-email')?.value.trim();
-    const message = form.querySelector('#contact-message')?.value.trim();
+  /* Replace this with your Formspree endpoint after signing up at formspree.io */
+  const ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
-    /* Basic client-side validation */
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name    = form.querySelector('#contact-name').value.trim();
+    const email   = form.querySelector('#contact-email').value.trim();
+    const message = form.querySelector('#contact-message').value.trim();
+
+    clearFormError(form);
+
     if (!name || !email || !message) {
-      e.preventDefault();
       showFormError(form, 'Please fill in all fields.');
       return;
     }
-
-    /* Simple email pattern check */
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      e.preventDefault();
       showFormError(form, 'Please enter a valid email address.');
       return;
     }
 
-    /* Let the mailto action proceed (opens mail client) */
-    const btn = form.querySelector('[type="submit"]');
-    if (btn) {
-      btn.textContent = 'Opening mail client…';
-      btn.disabled = true;
-      /* Re-enable after a short delay */
-      setTimeout(() => {
-        btn.innerHTML = 'Send Message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
-        btn.disabled = false;
-      }, 3000);
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body:    JSON.stringify({ name, email, message }),
+      });
+
+      if (res.ok) {
+        form.querySelectorAll('.form__group').forEach(g => g.hidden = true);
+        btn.hidden = true;
+        success.hidden = false;
+      } else {
+        throw new Error('Server error');
+      }
+    } catch {
+      btn.disabled = false;
+      btn.innerHTML = 'Send Message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+      showFormError(form, 'Something went wrong — please email me directly.');
     }
   });
 
-  function showFormError(form, message) {
-    /* Remove any existing error */
-    form.querySelector('.form__error')?.remove();
+  function showFormError(form, msg) {
+    clearFormError(form);
     const err = document.createElement('p');
     err.className = 'form__note form__error';
     err.style.color = 'var(--clr-error)';
-    err.textContent = message;
-    form.prepend(err);
-    /* Auto-remove after 4s */
-    setTimeout(() => err.remove(), 4000);
+    err.textContent = msg;
+    btn.before(err);
+    setTimeout(() => err.remove(), 5000);
+  }
+
+  function clearFormError(form) {
+    form.querySelector('.form__error')?.remove();
   }
 })();
