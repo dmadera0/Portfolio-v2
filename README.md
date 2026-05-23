@@ -1,128 +1,185 @@
-# Personal Portfolio — Static Site on AWS S3 + CloudFront
+# Daniel Madera — Portfolio · AWS S3 + CloudFront
 
-> A modern, dark-themed developer portfolio built with vanilla HTML/CSS/JS and deployed as a static site via AWS S3 (origin) and CloudFront (CDN + HTTPS).
+> Vanilla HTML/CSS/JS static portfolio deployed via AWS S3 (origin) and CloudFront (CDN + HTTPS). No build tooling, no frameworks, no dependencies to maintain.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  [Screenshot placeholder — add your own after deploy]   │
-│  Tip: run `open dist/index.html` locally to preview.   │
-└─────────────────────────────────────────────────────────┘
-```
+**Live site:** [danielmadera.dev](https://www.danielmadera.dev)
 
 ---
 
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
-2. [Tech Stack](#2-tech-stack)
-3. [Local Development](#3-local-development)
-4. [AWS Setup (Step-by-Step)](#4-aws-setup-step-by-step)
-5. [Deployment](#5-deployment)
-6. [Customization Guide](#6-customization-guide)
-7. [Cost Estimate](#7-cost-estimate)
-8. [Troubleshooting](#8-troubleshooting)
+2. [File Structure](#2-file-structure)
+3. [Tech Stack](#3-tech-stack)
+4. [Local Development](#4-local-development)
+5. [Admin Panel](#5-admin-panel)
+6. [Contact Form](#6-contact-form)
+7. [AWS Setup](#7-aws-setup)
+8. [Deployment](#8-deployment)
+9. [Customization Guide](#9-customization-guide)
+10. [Cost Estimate](#10-cost-estimate)
+11. [Troubleshooting](#11-troubleshooting)
 
 ---
 
 ## 1. Project Overview
 
-A fully static personal portfolio website featuring:
+### Sections
 
-- **Hero** — animated particle mesh canvas background, typing effect, gradient name display
-- **About** — bio, profile photo, meta information
-- **Skills** — icon grid organized by category (Languages / Frontend / Backend & Cloud / DevOps)
-- **Projects** — 3 project cards with tags, GitHub + demo links
-- **Experience** — vertical timeline with role, company, dates, bullet accomplishments
-- **Contact** — mailto-based contact form + direct contact links
-- **Footer** — copyright + social links
+| Section    | Description |
+|------------|-------------|
+| **Hero**   | Two-column layout — text left, floating terminal card right. Animated particle mesh canvas, typing effect, floating stat badges |
+| **About**  | Profile photo, two-paragraph bio, scannable 4-stat row (Years / Technologies / Cloud / Status), meta grid, résumé download |
+| **Skills** | Icon grid by category: Languages · Frontend · Backend & Cloud · DevOps & Tools (20 technologies) |
+| **Projects** | 2-column grid — featured project spans full width, two secondary cards side-by-side |
+| **Experience** | Vertical timeline — role, company, date range, bullet accomplishments, tech tags |
+| **Contact** | Fetch-based form (Formspree) + direct contact links (email, LinkedIn, GitHub) |
+| **Footer** | Copyright · Admin link · Social icons |
 
-All personal content is marked with `<!-- TODO: -->` comments so you can replace placeholder text with your real information.
+### Design System — Forest Ember
 
-### File Structure
+| Token | Value | Role |
+|-------|-------|------|
+| `--clr-bg` | `#101A11` | Deep forest green background |
+| `--clr-accent` | `#4ADE80` | Primary emerald green |
+| `--clr-cyan` | `#FBBF24` | Secondary warm amber |
+| `--clr-text` | `#F0FFF4` | Soft mint-white |
+| `--font-heading` | Outfit | Section titles, hero name |
+| `--font-body` | Space Grotesk | Body copy, nav, buttons |
+
+---
+
+## 2. File Structure
 
 ```
 portfolio/
-├── src/               ← source files (edit these)
-│   ├── index.html
+├── src/                    ← source files (edit these)
+│   ├── index.html          ← main portfolio page
+│   ├── admin.html          ← password-protected content editor
 │   ├── css/
-│   │   └── styles.css
+│   │   ├── styles.css      ← all portfolio styles + design tokens
+│   │   └── admin.css       ← admin panel styles
 │   ├── js/
-│   │   └── main.js
-│   └── assets/        ← add profile.jpg, favicon, etc. here
+│   │   ├── main.js         ← animations, nav, typed effect, contact form
+│   │   └── admin.js        ← admin auth, form builder, HTML generator
+│   └── assets/
+│       └── headshot.jpg    ← profile photo
 │
-├── dist/              ← build output (what gets uploaded to S3)
+├── dist/                   ← build output (rsync copy of src/, uploaded to S3)
 │
 ├── scripts/
-│   ├── build.sh       ← copies src/ → dist/
-│   └── deploy.sh      ← build + S3 sync + CloudFront invalidation
+│   ├── build.sh            ← rsync src/ → dist/
+│   └── deploy.sh           ← build + S3 sync + CloudFront invalidation
 │
 ├── aws/
-│   └── setup.sh       ← one-time AWS infrastructure creation
+│   └── setup.sh            ← one-time S3 bucket + CloudFront creation
 │
-├── .env               ← your secrets (gitignored)
-├── .env.example       ← template to copy
+├── .env                    ← secrets (gitignored)
+├── .env.example            ← template — copy to .env and fill in values
 └── README.md
 ```
 
 ---
 
-## 2. Tech Stack
+## 3. Tech Stack
 
-| Layer        | Technology                                              |
-|--------------|---------------------------------------------------------|
-| Markup       | HTML5 (semantic, ARIA-labelled)                         |
-| Styles       | Vanilla CSS with custom properties                      |
-| Scripts      | Vanilla JavaScript (ES2020, no frameworks)              |
-| Fonts        | Google Fonts — Syne + Space Grotesk                     |
-| Icons        | Devicons v2 (CDN)                                       |
-| Hosting      | AWS S3 (static website origin)                          |
-| CDN / HTTPS  | AWS CloudFront (PriceClass_100)                         |
-| Deployment   | AWS CLI + bash scripts                                  |
+| Layer | Technology |
+|-------|-----------|
+| Markup | HTML5 (semantic, ARIA-labelled) |
+| Styles | Vanilla CSS with custom properties |
+| Scripts | Vanilla JavaScript (ES2020, no frameworks) |
+| Fonts | Google Fonts — Outfit (headings) + Space Grotesk (body) |
+| Skill icons | Devicons v2 (CDN) |
+| Contact form | Formspree (`/f/xlgvnkzb`) |
+| Hosting | AWS S3 (static website origin) |
+| CDN / HTTPS | AWS CloudFront (PriceClass_100) |
+| Deployment | AWS CLI + bash scripts |
 
 ---
 
-## 3. Local Development
+## 4. Local Development
 
-No build tooling required — the site runs directly from files.
-
-### Option A — Open directly
+No build step required — the site runs directly from the file system.
 
 ```bash
-open src/index.html        # macOS
-start src/index.html       # Windows
-xdg-open src/index.html    # Linux
-```
-
-> **Note:** Some browsers block CDN resources (fonts, devicons) when opening `file://` URLs. Use Option B for full fidelity.
-
-### Option B — Local HTTP server (recommended)
-
-**Python (built-in):**
-```bash
-cd src
-python3 -m http.server 3000
+# Start a local HTTP server (required for CDN fonts/icons to load)
+cd src && python3 -m http.server 3000
 # Open http://localhost:3000
-```
 
-**Node.js (npx, no install needed):**
-```bash
+# Alt: Node
 npx serve src -p 3000
-# Open http://localhost:3000
 ```
 
-**VS Code:** Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension, right-click `src/index.html` → "Open with Live Server".
+> Do not open `index.html` via `file://` — CDN resources (fonts, devicons) will be blocked by the browser.
 
 ---
 
-## 4. AWS Setup (Step-by-Step)
+## 5. Admin Panel
+
+A password-protected content editor lives at `/admin.html`.
+
+**Access:** `http://localhost:3000/admin.html` (local) or `danielmadera.dev/admin.html` (live)
+
+### First use
+
+On first visit, you are prompted to **create a password**. The password is hashed with SHA-256 via the browser's Web Crypto API and stored in `localStorage` — it never leaves your device.
+
+### Editing workflow
+
+1. Open the admin panel and log in
+2. Edit content across tabs: **Hero · About · Projects · Experience · Contact**
+3. Click **Download index.html** — a fully updated `index.html` is downloaded
+4. Replace `src/index.html` with the downloaded file
+5. Run `./scripts/deploy.sh`
+
+### What can be edited
+
+| Tab | Fields |
+|-----|--------|
+| Hero | Greeting, name, tagline, typed words |
+| About | Bio paragraphs, location, status, focus, résumé URL, availability badge |
+| Projects | Title, description, tags, GitHub URL, demo URL, icon (7 options) — add/remove cards |
+| Experience | Role, company, URL, period, bullet points, tags — add/remove entries |
+| Contact | Lead text, email, LinkedIn URL/label, GitHub URL/label |
+
+> Skills are not editable via admin — they use Devicon CSS class names. Edit the `skills` section of `src/index.html` directly.
+
+### Typed words
+
+Typed words are injected into `index.html` as a `<script>` block when downloaded from admin:
+
+```html
+<script>window.TYPED_WORDS = ["cloud solutions", "business value", "scalable systems"];</script>
+```
+
+`main.js` reads `window.TYPED_WORDS` at runtime, falling back to built-in defaults if the variable is absent.
+
+---
+
+## 6. Contact Form
+
+The contact form POSTs JSON to **Formspree** and shows an inline success state — no page reload, no mail client popup.
+
+| Setting | Value |
+|---------|-------|
+| Endpoint | `https://formspree.io/f/xlgvnkzb` |
+| Submissions delivered to | `dmadera0@gmail.com` |
+| Method | `fetch` POST with `Content-Type: application/json` |
+
+To change the endpoint, update `ENDPOINT` in `src/js/main.js`:
+
+```js
+const ENDPOINT = 'https://formspree.io/f/xlgvnkzb';
+```
+
+---
+
+## 7. AWS Setup
 
 ### Prerequisites
 
-| Requirement | Notes |
-|-------------|-------|
-| AWS CLI v2  | [Install guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) |
-| AWS account | Free tier is sufficient |
-| IAM user / role | Needs the permissions listed below |
+- AWS CLI v2 configured (`aws configure`)
+- IAM user/role with S3 + CloudFront permissions
 
 **Minimum IAM permissions:**
 
@@ -133,23 +190,16 @@ npx serve src -p 3000
     {
       "Effect": "Allow",
       "Action": [
-        "s3:CreateBucket",
-        "s3:PutBucketPolicy",
-        "s3:PutBucketWebsite",
-        "s3:PutPublicAccessBlock",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListBucket"
+        "s3:CreateBucket", "s3:PutBucketPolicy", "s3:PutBucketWebsite",
+        "s3:PutPublicAccessBlock", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"
       ],
       "Resource": "*"
     },
     {
       "Effect": "Allow",
       "Action": [
-        "cloudfront:CreateDistribution",
-        "cloudfront:CreateInvalidation",
-        "cloudfront:GetInvalidation",
-        "cloudfront:ListDistributions"
+        "cloudfront:CreateDistribution", "cloudfront:CreateInvalidation",
+        "cloudfront:GetInvalidation", "cloudfront:ListDistributions"
       ],
       "Resource": "*"
     }
@@ -157,153 +207,42 @@ npx serve src -p 3000
 }
 ```
 
-**Configure AWS CLI:**
-```bash
-aws configure
-# AWS Access Key ID:     <your key>
-# AWS Secret Access Key: <your secret>
-# Default region name:   us-east-1
-# Default output format: json
-```
-
----
-
-### Automated Setup (Recommended)
-
-The `aws/setup.sh` script handles all steps automatically:
+### One-time setup
 
 ```bash
 chmod +x aws/setup.sh scripts/build.sh scripts/deploy.sh
 ./aws/setup.sh
 ```
 
-It will:
-1. Prompt for a bucket name (must be globally unique)
-2. Create and configure the S3 bucket
-3. Enable static website hosting
-4. Apply a public-read bucket policy
-5. Create a CloudFront distribution pointing at the S3 website endpoint
-6. Write a `.env` file with the generated IDs
+The script creates the S3 bucket, enables static hosting, applies a public-read policy, creates a CloudFront distribution, and writes `.env` with the generated IDs.
 
-Skip ahead to [Section 5 — Deployment](#5-deployment) once setup completes.
+### Current AWS resources
 
----
-
-### Manual Setup (Step-by-Step Reference)
-
-#### 4a. Create the S3 Bucket
-
-```bash
-BUCKET=your-portfolio-bucket-name
-REGION=us-east-1
-
-aws s3api create-bucket \
-  --bucket "$BUCKET" \
-  --region "$REGION"
-  # For regions other than us-east-1, add:
-  # --create-bucket-configuration LocationConstraint="$REGION"
-```
-
-#### 4b. Disable Block Public Access
-
-```bash
-aws s3api put-public-access-block \
-  --bucket "$BUCKET" \
-  --public-access-block-configuration \
-    "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
-```
-
-#### 4c. Enable Static Website Hosting
-
-```bash
-aws s3api put-bucket-website \
-  --bucket "$BUCKET" \
-  --website-configuration '{
-    "IndexDocument": {"Suffix": "index.html"},
-    "ErrorDocument": {"Key": "index.html"}
-  }'
-```
-
-#### 4d. Apply Bucket Policy (Public Read)
-
-```bash
-aws s3api put-bucket-policy \
-  --bucket "$BUCKET" \
-  --policy "{
-    \"Version\": \"2012-10-17\",
-    \"Statement\": [{
-      \"Sid\": \"PublicReadGetObject\",
-      \"Effect\": \"Allow\",
-      \"Principal\": \"*\",
-      \"Action\": \"s3:GetObject\",
-      \"Resource\": \"arn:aws:s3:::${BUCKET}/*\"
-    }]
-  }"
-```
-
-#### 4e. Create CloudFront Distribution
-
-> `aws/setup.sh` handles this automatically. Key settings applied:
-
-| Setting                 | Value                                         |
-|-------------------------|-----------------------------------------------|
-| Origin                  | S3 website endpoint (HTTP)                    |
-| Viewer protocol policy  | Redirect HTTP → HTTPS                         |
-| Cache policy            | CachingOptimized (AWS managed)                |
-| Custom error responses  | 403 + 404 → `/index.html` (SPA support)       |
-| Price class             | PriceClass_100 (US, Canada, Europe)           |
-| HTTP versions           | HTTP/2 + HTTP/3                               |
-| Default root object     | `index.html`                                  |
-| Compression             | Enabled                                       |
-
-#### 4f. (Optional) Custom Domain with Route 53
-
-1. Register or transfer your domain to Route 53.
-2. Request an **ACM certificate** in `us-east-1`:
-   ```bash
-   aws acm request-certificate \
-     --domain-name "yourdomain.com" \
-     --subject-alternative-names "www.yourdomain.com" \
-     --validation-method DNS \
-     --region us-east-1
-   ```
-3. Add the CNAME records ACM provides to your Route 53 hosted zone to validate.
-4. Update your CloudFront distribution with the alternate domain name + ACM certificate.
-5. In Route 53, create an **A record (Alias)** → your CloudFront distribution.
+| Resource | Value |
+|----------|-------|
+| S3 Bucket | `d.madera-porfolio` (us-east-1) |
+| CloudFront Distribution | `EST245WQ0FXQM` |
+| Custom domains | `danielmadera.dev`, `www.danielmadera.dev` |
 
 ---
 
-## 5. Deployment
-
-### First deploy
+## 8. Deployment
 
 ```bash
-# Make scripts executable (one-time)
-chmod +x scripts/build.sh scripts/deploy.sh aws/setup.sh
-
-# Run setup (creates S3 + CloudFront, writes .env)
-./aws/setup.sh
-
-# Deploy
+# Full build + deploy
 ./scripts/deploy.sh
-```
 
-### Subsequent deploys
-
-```bash
-./scripts/deploy.sh
-```
-
-This will:
-1. Rebuild `dist/` from `src/`
-2. Sync `dist/` → S3 (`--delete` removes files no longer in source)
-3. Create a CloudFront invalidation for `/*`
-
-### Skip rebuild
-
-```bash
+# Deploy without rebuilding dist/
 ./scripts/deploy.sh --skip-build
 ```
+
+The deploy script:
+1. Rsyncs `src/` → `dist/`
+2. Uploads HTML with `no-cache` headers (always fresh)
+3. Uploads CSS/JS/assets with `max-age=31536000` (long-lived cache)
+4. Creates a CloudFront invalidation for `/*`
+
+**Cache note:** After deploying, CloudFront propagation takes ~30–60 seconds. If your browser shows stale content, do a hard refresh (`Cmd+Shift+R` on Mac) or open in an incognito window.
 
 ### Check invalidation status
 
@@ -316,110 +255,63 @@ aws cloudfront get-invalidation \
 
 ---
 
-## 6. Customization Guide
-
-### Personal information
-
-All placeholder content is marked with `<!-- TODO: -->` comments in `src/index.html`. Find all locations:
-
-```bash
-grep -n "TODO" src/index.html
-```
-
-Key items to update:
-
-| Item              | Location in `index.html`                      |
-|-------------------|-----------------------------------------------|
-| Name + title      | `<title>`, `.hero__name`, `.hero__title`      |
-| Tagline           | `.hero__tagline`                              |
-| Bio               | `.about__bio` (×2 paragraphs)                 |
-| Location / status | `.about__meta`                                |
-| Résumé link       | `<a href="#" download>` in About section      |
-| Profile photo     | Replace `.about__photo-placeholder` with `<img>` |
-| Projects (×3)     | `.project-card` — title, desc, tags, links   |
-| Work experience   | `.timeline__item` entries                     |
-| Email             | `mailto:` links + form `action`               |
-| LinkedIn          | `linkedin.com/in/...` links                   |
-| GitHub            | `github.com/...` links                        |
-| Typed words       | `words` array in `src/js/main.js` line ~57    |
-| Footer name       | `.footer__copy` paragraph                     |
+## 9. Customization Guide
 
 ### Colors
 
-All colors are CSS custom properties at the top of `src/css/styles.css`:
+All tokens live in the `:root` block at the top of `src/css/styles.css`. The two values that retheme the entire site:
 
 ```css
-:root {
-  --clr-accent: #7c6dfa;      /* ← primary accent (indigo-violet) */
-  --clr-cyan:   #22d3ee;      /* ← secondary highlight (cyan)     */
-}
+--clr-accent: #4ADE80;   /* primary green — buttons, tags, highlights */
+--clr-cyan:   #FBBF24;   /* secondary amber — typed text, timeline hover */
 ```
 
-Change these two values to completely retheme the site.
+Also update the hardcoded RGBA values in the same file that reference the accent/cyan numerically (search for `rgba(74,222,128` and `rgba(251,191,36`).
+
+### Particle canvas colors
+
+In `src/js/main.js`, the mesh particle colors must be updated manually to match CSS changes:
+
+```js
+const ACCENT = { r:  74, g: 222, b: 128 };  // matches --clr-accent
+const CYAN   = { r: 251, g: 191, b:  36 };  // matches --clr-cyan
+```
 
 ### Fonts
 
-1. Pick a pair at [fonts.google.com](https://fonts.google.com)
-2. Replace the `<link>` tag in `src/index.html`
+1. Choose a pairing at [fonts.google.com](https://fonts.google.com)
+2. Replace the `<link>` in `src/index.html`
 3. Update in `src/css/styles.css`:
    ```css
-   --font-heading: 'YourHeadingFont', sans-serif;
-   --font-body:    'YourBodyFont',    sans-serif;
+   --font-heading: 'YourFont', sans-serif;
+   --font-body:    'YourFont', sans-serif;
    ```
 
-### Adding a profile photo
+### Profile photo
 
-1. Add `src/assets/profile.jpg` (recommended: 600×750 px)
-2. In `src/index.html`, replace the `about__photo-placeholder` div:
-   ```html
-   <img src="assets/profile.jpg" alt="Your Name" />
-   ```
-3. Add CSS:
-   ```css
-   .about__photo-placeholder img {
-     width: 100%;
-     height: 100%;
-     object-fit: cover;
-     border-radius: var(--radius-xl);
-   }
-   ```
-
-### Real contact form backend
-
-The current form uses `mailto:`. For a proper backend:
-
-- **Formspree** (easiest): change form `action` to `https://formspree.io/f/<YOUR_ID>` and `method="POST"`
-- **AWS SES + Lambda**: create an API Gateway endpoint → Lambda → SES, then call it via `fetch()` in `main.js`
+Place the image at `src/assets/headshot.jpg`. The `<img>` tag in the About section references this path directly.
 
 ---
 
-## 7. Cost Estimate
+## 10. Cost Estimate
 
-| Service          | Free Tier / Expected Cost                                           |
-|------------------|---------------------------------------------------------------------|
-| S3 Storage       | ~$0.023/GB/month — a portfolio is <1 MB, essentially **free**      |
-| S3 Requests      | 20,000 GET free/month — well within limits for a portfolio          |
-| CloudFront       | 1 TB + 10M requests free/month (always-free tier)                  |
-| ACM Certificate  | **Free** (CloudFront-attached certificates)                         |
-| Route 53         | $0.50/hosted zone/month + $12–$15/year for a `.dev` domain         |
-| **Total**        | **~$0–$1/month** for typical portfolio traffic                      |
+| Service | Cost |
+|---------|------|
+| S3 Storage | ~$0.023/GB/month — portfolio is <5 MB, essentially **free** |
+| S3 Requests | 20,000 GET free/month |
+| CloudFront | 1 TB + 10M requests free/month (always-free tier) |
+| ACM Certificate | **Free** |
+| Route 53 | $0.50/hosted zone/month + ~$14/year for `.dev` domain |
+| Formspree | Free tier — 50 submissions/month |
+| **Total** | **~$1/month** |
 
 ---
 
-## 8. Troubleshooting
+## 11. Troubleshooting
 
-### 403 Forbidden on S3
+### Browser shows old version after deploy
 
-Block Public Access is still enabled or the bucket policy is missing.
-
-```bash
-aws s3api get-public-access-block --bucket "$S3_BUCKET"
-# All four values should be "false"
-```
-
-### CloudFront returns stale content
-
-Force a cache invalidation:
+CloudFront caches aggressively. Do a hard refresh (`Cmd+Shift+R`) or open in incognito. If the issue persists, create a manual invalidation:
 
 ```bash
 source .env
@@ -428,27 +320,32 @@ aws cloudfront create-invalidation \
   --paths "/*"
 ```
 
-### CORS errors in browser console
+### Contact form submissions not arriving
 
-Usually a `file://` browser restriction — serve via a local HTTP server instead (see Section 3).
+1. Check the Formspree dashboard at [formspree.io](https://formspree.io) — submissions appear there even if email delivery fails
+2. Check spam folder
+3. Verify `ENDPOINT` in `main.js` matches your form ID
+
+### Admin password forgotten
+
+Clear `localStorage` in DevTools (`Application → Local Storage → Clear All`) and reload `/admin.html`. You will be prompted to create a new password.
+
+### 403 Forbidden on S3
+
+Block Public Access is still enabled or the bucket policy is missing:
+
+```bash
+aws s3api get-public-access-block --bucket "$S3_BUCKET"
+# All four values should be "false"
+```
 
 ### Site shows S3 XML error page
 
-You're accessing the S3 REST endpoint, not the website endpoint. Use the CloudFront URL or the S3 website URL (`http://<bucket>.s3-website-<region>.amazonaws.com`).
-
-### `aws: command not found`
-
-```bash
-# macOS
-brew install awscli
-
-# All platforms — see official docs:
-# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
-```
+You're hitting the S3 REST endpoint directly. Always access via the CloudFront URL or custom domain.
 
 ### CloudFront distribution stuck in "InProgress"
 
-Normal — distributions take 5–15 minutes to propagate globally.
+Normal — global propagation takes 5–15 minutes:
 
 ```bash
 source .env
