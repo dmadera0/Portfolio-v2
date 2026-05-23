@@ -320,8 +320,7 @@ function throttle(fn, limit) {
   const success = document.getElementById('form-success');
   if (!form) return;
 
-  /* Replace this with your Formspree endpoint after signing up at formspree.io */
-  const ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+  const ENDPOINT = 'https://formspree.io/f/xlgvnkzb';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -350,13 +349,12 @@ function throttle(fn, limit) {
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body:    JSON.stringify({ name, email, message }),
       });
-
       if (res.ok) {
         form.querySelectorAll('.form__group').forEach(g => g.hidden = true);
         btn.hidden = true;
         success.hidden = false;
       } else {
-        throw new Error('Server error');
+        throw new Error('Rejected');
       }
     } catch {
       btn.disabled = false;
