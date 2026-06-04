@@ -49,62 +49,50 @@ const DEFAULTS = {
       desc:      'A serverless REST API for managing books and user reviews. Built as an event-driven portfolio piece featuring CRUD operations, NoSQL data modeling with Global Secondary Indexes, and automated infrastructure via AWS-managed services.',
       tags:      ['Node.js 22.x', 'AWS Lambda', 'DynamoDB', 'API Gateway', 'REST API'],
       githubUrl: 'https://github.com/dmadera0',
-      demoUrl:   'https://example.com',
-      icon:      'cloud',
+      demoUrl:   '', // TODO: replace with real Book Review API live demo URL
+      icon:      'server',
     },
     {
       title:     'TaskFlow API',
       desc:      'A high-performance RESTful task management API supporting multi-tenant workspaces, JWT auth, and real-time push notifications. Handles 50k+ requests/day in production.',
       tags:      ['Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker'],
-      githubUrl: 'https://github.com',
-      demoUrl:   'https://example.com',
+      githubUrl: '', // TODO: replace with real TaskFlow API GitHub repo URL
+      demoUrl:   '', // TODO: replace with real TaskFlow API live demo URL
       icon:      'clipboard',
     },
     {
       title:     'SentimentLens',
       desc:      'An NLP-powered social media sentiment analysis tool that aggregates and classifies public opinion in real time across Twitter and Reddit using a fine-tuned BERT model.',
       tags:      ['Python', 'FastAPI', 'PyTorch', 'React', 'AWS ECS'],
-      githubUrl: 'https://github.com',
-      demoUrl:   'https://example.com',
+      githubUrl: '', // TODO: replace with real SentimentLens GitHub repo URL
+      demoUrl:   '', // TODO: replace with real SentimentLens live demo URL
       icon:      'chat',
     },
   ],
   experience: [
     {
-      role:       'Software Engineer II',
-      company:    'Acme Corp',
-      companyUrl: 'https://example.com',
-      period:     'Jan 2023 — Present',
-      bullets:    [
-        'Architected and shipped a microservices migration reducing API p99 latency by 40% for 2M+ daily users.',
-        'Led a 4-engineer team to redesign the data pipeline, cutting ETL processing time from 6 hours to 45 minutes.',
-        'Implemented blue/green CI/CD deployment strategy on AWS ECS, achieving 99.98% uptime over 12 months.',
-        'Mentored two junior engineers through code reviews, architecture discussions, and pair programming sessions.',
-      ],
-      tags: ['TypeScript', 'AWS', 'Node.js', 'PostgreSQL'],
+      role:       '', // TODO: replace with real job title
+      company:    '', // TODO: replace with real company name (was: Acme Corp)
+      companyUrl: '', // TODO: replace with real company URL
+      period:     '', // TODO: replace with real date range
+      bullets:    [], // TODO: replace with real accomplishment bullets
+      tags:       [], // TODO: replace with real tech tags
     },
     {
-      role:       'Software Engineer I',
-      company:    'TechStart Inc.',
-      companyUrl: 'https://example.com',
-      period:     'Jul 2021 — Dec 2022',
-      bullets:    [
-        'Built and maintained 12+ customer-facing React features used by 500k+ monthly active users.',
-        'Developed a Python ETL pipeline to ingest and normalize third-party data sources into a central data warehouse.',
-        'Reduced front-end bundle size by 38% through code-splitting, lazy loading, and dependency audit.',
-      ],
-      tags: ['React', 'Python', 'Redis', 'Docker'],
+      role:       '', // TODO: replace with real job title
+      company:    '', // TODO: replace with real company name (was: TechStart Inc.)
+      companyUrl: '', // TODO: replace with real company URL
+      period:     '', // TODO: replace with real date range
+      bullets:    [], // TODO: replace with real accomplishment bullets
+      tags:       [], // TODO: replace with real tech tags
     },
     {
-      role:       'Software Engineering Intern',
-      company:    'BigCo Technologies',
-      companyUrl: 'https://example.com',
-      period:     'May 2020 — Aug 2020',
-      bullets:    [
-        'Developed an internal tooling dashboard that automated manual reporting, saving the team ~8 hours/week.',
-        'Contributed 15+ pull requests to core platform services during a 3-month internship.',
-      ],
-      tags: ['Java', 'Spring Boot', 'MySQL'],
+      role:       '', // TODO: replace with real job title
+      company:    '', // TODO: replace with real company name (was: BigCo Technologies)
+      companyUrl: '', // TODO: replace with real company URL
+      period:     '', // TODO: replace with real date range
+      bullets:    [], // TODO: replace with real accomplishment bullets
+      tags:       [], // TODO: replace with real tech tags
     },
   ],
   contact: {
@@ -148,12 +136,16 @@ function saveContent(data) {
 (function initAuth() {
   const loginScreen = document.getElementById('admin-login');
   const app         = document.getElementById('admin-app');
+  const logoutBtn   = document.getElementById('logout-btn');
+
+  /* Password disabled — show admin directly */
+  show();
+
+  /* Kept for re-enabling later:
   const form        = document.getElementById('login-form');
   const input       = document.getElementById('password-input');
   const subtitle    = document.getElementById('login-subtitle');
   const errEl       = document.getElementById('login-error');
-  const logoutBtn   = document.getElementById('logout-btn');
-
   const stored = localStorage.getItem(PASS_KEY);
   const isSetup = !stored;
 
@@ -193,9 +185,9 @@ function saveContent(data) {
   });
 
   logoutBtn.addEventListener('click', () => {
-    sessionStorage.removeItem('adm_ok');
     location.reload();
   });
+  */ // end disabled auth block
 
   function show() {
     loginScreen.hidden = true;

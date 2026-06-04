@@ -31,24 +31,22 @@ function throttle(fn, limit) {
   };
 }
 
-/* ─── 1. Hero Canvas (Particle Mesh) ─────────────────────────────────────── */
-(function initCanvas() {
+// Particle canvas disabled — replaced with CSS background
+/* (function initCanvas() {
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
   let width, height, particles, animId;
 
-  /* Color values matching CSS --clr-accent and --clr-cyan */
   const ACCENT   = { r:  74, g: 222, b: 128 };
   const CYAN     = { r: 251, g: 191, b:  36 };
   const PARTICLE_COUNT = Math.min(70, Math.floor(window.innerWidth / 16));
-  const CONNECT_DIST   = 160;  /* px — max distance to draw a line between particles */
+  const CONNECT_DIST   = 160;
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
   function interpolateColor(t) {
-    /* t in [0,1]: blend ACCENT → CYAN */
     return {
       r: Math.round(lerp(ACCENT.r, CYAN.r, t)),
       g: Math.round(lerp(ACCENT.g, CYAN.g, t)),
@@ -58,27 +56,22 @@ function throttle(fn, limit) {
 
   class Particle {
     constructor() { this.reset(true); }
-
     reset(initial = false) {
       this.x  = Math.random() * width;
       this.y  = initial ? Math.random() * height : Math.random() * height;
       this.vx = (Math.random() - 0.5) * 0.45;
       this.vy = (Math.random() - 0.5) * 0.45;
       this.r  = Math.random() * 1.8 + 0.8;
-      /* Color lerp factor */
       this.t  = Math.random();
     }
-
     move() {
       this.x += this.vx;
       this.y += this.vy;
-      /* Wrap around edges */
-      if (this.x < -10)       this.x = width  + 10;
+      if (this.x < -10)        this.x = width  + 10;
       if (this.x > width + 10) this.x = -10;
-      if (this.y < -10)       this.y = height + 10;
+      if (this.y < -10)        this.y = height + 10;
       if (this.y > height + 10) this.y = -10;
     }
-
     draw() {
       const c = interpolateColor(this.t);
       ctx.beginPath();
@@ -107,11 +100,10 @@ function throttle(fn, limit) {
         const dx   = particles[i].x - particles[j].x;
         const dy   = particles[i].y - particles[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-
         if (dist < CONNECT_DIST) {
-          const alpha  = (1 - dist / CONNECT_DIST) * 0.18;
-          const tAvg   = (particles[i].t + particles[j].t) / 2;
-          const c      = interpolateColor(tAvg);
+          const alpha = (1 - dist / CONNECT_DIST) * 0.18;
+          const tAvg  = (particles[i].t + particles[j].t) / 2;
+          const c     = interpolateColor(tAvg);
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -130,24 +122,17 @@ function throttle(fn, limit) {
     animId = requestAnimationFrame(frame);
   }
 
-  /* Pause animation when tab is not visible (saves CPU) */
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      cancelAnimationFrame(animId);
-    } else {
-      animId = requestAnimationFrame(frame);
-    }
+    if (document.hidden) { cancelAnimationFrame(animId); }
+    else { animId = requestAnimationFrame(frame); }
   });
 
-  window.addEventListener('resize', throttle(() => {
-    resize();
-    buildParticles();
-  }, 200));
+  window.addEventListener('resize', throttle(() => { resize(); buildParticles(); }, 200));
 
   resize();
   buildParticles();
   frame();
-})();
+})(); */
 
 
 /* ─── 2. Typing Effect ────────────────────────────────────────────────────── */
