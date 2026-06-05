@@ -919,6 +919,12 @@ h1, h2, h3, h4 {
   line-height: 1;
 }
 
+.skill-card svg {
+  width: 2rem;
+  height: 2rem;
+  color: var(--clr-accent);
+}
+
 .skill-card span {
   font-size: var(--fs-xs);
   font-weight: 500;
